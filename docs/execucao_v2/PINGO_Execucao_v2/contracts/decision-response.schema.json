@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pingo DecisionResponse v1",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "1.0"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "data_mode": {
+      "type": "string",
+      "enum": [
+        "own_synthetic_demo",
+        "event_dataset_demo"
+      ]
+    },
+    "as_of_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "needs_input",
+        "ready",
+        "limited",
+        "blocked",
+        "error"
+      ]
+    },
+    "message": {
+      "type": "string"
+    },
+    "question": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "field": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "field",
+            "text"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "scenarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "total_price_cents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "upfront_cents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "schedule": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "due_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "amount_cents": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "due_date",
+                "amount_cents"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "visible_until": {
+            "type": "string",
+            "format": "date"
+          },
+          "remaining_after_window_cents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "projection": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "unavailable",
+                  "scenario_with_assumptions"
+                ]
+              },
+              "through_date": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "min_balance_cents": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "assessment": {
+                "type": "string",
+                "enum": [
+                  "insufficient_data",
+                  "meets_declared_constraints_in_window",
+                  "violates_declared_constraints_in_window"
+                ]
+              }
+            },
+            "required": [
+              "mode",
+              "through_date",
+              "min_balance_cents",
+              "assessment"
+            ],
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "mode": {
+                      "const": "unavailable"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "min_balance_cents": {
+                      "type": "null"
+                    },
+                    "through_date": {
+                      "type": "null"
+                    },
+                    "assessment": {
+                      "const": "insufficient_data"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "mode": {
+                      "const": "scenario_with_assumptions"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "min_balance_cents": {
+                      "type": "integer"
+                    },
+                    "through_date": {
+                      "type": "string",
+                      "format": "date"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "reason_evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "total_price_cents",
+          "upfront_cents",
+          "schedule",
+          "visible_until",
+          "remaining_after_window_cents",
+          "projection",
+          "reason_evidence_ids"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 3
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "user_confirmed",
+              "dataset_observed",
+              "derived",
+              "own_synthetic_fixture"
+            ]
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "origin",
+          "detail"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "update_inputs",
+          "compare_options",
+          "save_plan",
+          "review_plan",
+          "request_support",
+          "open_demo_checkout"
+        ]
+      }
+    },
+    "trace_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "contract_version",
+    "request_id",
+    "data_mode",
+    "as_of_date",
+    "state",
+    "message",
+    "question",
+    "scenarios",
+    "evidence",
+    "assumptions",
+    "actions",
+    "trace_id"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "blocked",
+              "error"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "scenarios": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "needs_input"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "question": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  ]
+}

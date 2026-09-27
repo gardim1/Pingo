@@ -1,0 +1,22 @@
+# Source upload allowlist; diagnostic documents, tests, logs and credentials stay local.
+**
+!Dockerfile
+!.dockerignore
+!.gcloudignore
+!requirements.txt
+!backend/
+!backend/**/
+!backend/*.py
+!backend/**/*.py
+!backend/data/historical_context.sql
+!backend/data/golden_context.sql
+!backend/fixtures/calculo-ilustrativo.json
+!contracts/
+!contracts/decision-response.schema.json
+!contracts/accompaniment-response.schema.json
+**/__pycache__/
+**/*.pyc
+**/.env
+**/.env.*
+**/credentials/
+**/secrets/

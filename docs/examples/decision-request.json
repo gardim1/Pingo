@@ -1,0 +1,16 @@
+{
+  "message": "Quero planejar a compra deste celular fictício.",
+  "persona_key": "persona-a",
+  "decision": {
+    "label": "Celular fictício",
+    "total_price_cents": 1000000,
+    "upfront_cents": 0,
+    "installment_count": 10,
+    "first_due_date": "2026-10-01"
+  },
+  "preferences": {
+    "purpose": "uso pessoal declarado",
+    "can_wait": true,
+    "protected_items": ["compromissos essenciais"]
+  }
+}

@@ -1,0 +1,114 @@
+:root {
+  --teal-primary: #0e5a5f;
+  --teal-dark: #0b3c49;
+  --teal-hover: #0a3f43;
+  --teal-light: #e3eeee;
+  --teal-border: #b9d3d3;
+  --ink: #1c1b1b;
+  --ink-secondary: #3d3a3a;
+  --muted: #4a4545;
+  --danger: #8f1114;
+  --danger-light: #fbf1e1;
+  --success: #15855c;
+  --success-light: #e6f3ec;
+  --card-bg: #ffffff;
+  --border-light: #e3e1e1;
+  --border-subtle: #eeecec;
+  --bg-page: #e9e6e3;
+  --bg-home: #f0f1f3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-page);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--teal-primary);
+  text-decoration: underline;
+}
+a:hover {
+  color: var(--teal-hover);
+}
+
+button {
+  font-family: inherit;
+}
+
+*:focus-visible {
+  outline: 3px solid var(--teal-primary);
+  outline-offset: 2px;
+}
+
+[data-noscrollbar] {
+  scrollbar-width: none;
+}
+[data-noscrollbar]::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes pgSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pgPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.device-frame {
+  width: 100%;
+  max-width: 390px;
+  height: 844px;
+  border-radius: 54px;
+  background: #111;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 30px 60px -20px rgba(28, 27, 27, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .device-frame {
+    max-width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+}
+
+.device-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 44px;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 480px) {
+  .device-screen {
+    border-radius: 0;
+  }
+}

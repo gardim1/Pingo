@@ -1,0 +1,36 @@
+{
+  "reference_date": "2025-09-30",
+  "currency": "BRL",
+  "origin": "user_supplied_hackathon_snapshot",
+  "monthly": [
+    {"month": "2025-04-01", "salary_cents": 675499, "expenses_excluding_invoice_cents": 722261, "flexible_cents": 8466, "interest_cents": 0},
+    {"month": "2025-05-01", "salary_cents": 675499, "expenses_excluding_invoice_cents": 636145, "flexible_cents": 37834, "interest_cents": 0},
+    {"month": "2025-06-01", "salary_cents": 675499, "expenses_excluding_invoice_cents": 936319, "flexible_cents": 98559, "interest_cents": 0},
+    {"month": "2025-07-01", "salary_cents": 675499, "expenses_excluding_invoice_cents": 493850, "flexible_cents": 20089, "interest_cents": 0},
+    {"month": "2025-08-01", "salary_cents": 675499, "expenses_excluding_invoice_cents": 738333, "flexible_cents": 34913, "interest_cents": 0},
+    {"month": "2025-09-01", "salary_cents": 675499, "expenses_excluding_invoice_cents": 733184, "flexible_cents": 38647, "interest_cents": 0}
+  ],
+  "installments": [
+    {"label": "Passagem aérea", "amount_cents": 24401, "current": 2, "total": 3, "last_observed_date": null, "estimated_end_date": "2025-10-10", "requires_confirmation": true},
+    {"label": "IPTU", "amount_cents": 41109, "current": 9, "total": 10, "last_observed_date": null, "estimated_end_date": "2025-10-12", "requires_confirmation": true},
+    {"label": "Artigos infantis", "amount_cents": 3568, "current": 5, "total": 6, "last_observed_date": null, "estimated_end_date": "2025-10-18", "requires_confirmation": true}
+  ],
+  "categories": [
+    {"category": "Emprestimos e financiamentos", "amount_cents": 322261},
+    {"category": "Educação", "amount_cents": 148596},
+    {"category": "Casa", "amount_cents": 128930},
+    {"category": "Mercado", "amount_cents": 56823},
+    {"category": "Posto", "amount_cents": 28050},
+    {"category": "Viagens", "amount_cents": 24401},
+    {"category": "Restaurantes", "amount_cents": 6088},
+    {"category": "Produtos financeiros", "amount_cents": 4967}
+  ],
+  "limitations": [
+    "Snapshot fornecido pelo usuário; não comprova execução desta consulta BigQuery.",
+    "Datas originais e contagem de transações não foram fornecidas; não foram inventadas.",
+    "Categorias de setembro são uma seleção não exaustiva; não somam necessariamente o total mensal.",
+    "A definição de gastos flexíveis não foi fornecida; os valores preservam apenas o snapshot.",
+    "Histórico não confirma saldo disponível, renda futura, crédito ou todas as obrigações ativas.",
+    "Términos estimados exigem confirmação; não garantem liberação nem capacidade futura."
+  ]
+}

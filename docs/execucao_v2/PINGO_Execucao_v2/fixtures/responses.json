@@ -1,0 +1,375 @@
+[
+  {
+    "contract_version": "1.0",
+    "request_id": "example-ready",
+    "data_mode": "own_synthetic_demo",
+    "as_of_date": "2026-09-26",
+    "state": "ready",
+    "message": "Neste exemplo fictício, iniciar as parcelas em outubro leva a uma projeção negativa antes da entrada. A alternativa muda a primeira cobrança; ambas dependem das premissas exibidas.",
+    "question": null,
+    "scenarios": [
+      {
+        "id": "agora",
+        "title": "Primeira parcela em outubro",
+        "total_price_cents": 1000000,
+        "upfront_cents": 0,
+        "schedule": [
+          {
+            "due_date": "2026-10-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2026-11-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2026-12-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-01-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-02-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-03-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-04-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-05-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-06-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-07-01",
+            "amount_cents": 100000
+          }
+        ],
+        "visible_until": "2026-12-31",
+        "remaining_after_window_cents": 700000,
+        "projection": {
+          "mode": "scenario_with_assumptions",
+          "through_date": "2026-12-31",
+          "min_balance_cents": -20000,
+          "assessment": "violates_declared_constraints_in_window"
+        },
+        "reason_evidence_ids": [
+          "fixture-context",
+          "fixture-terms"
+        ]
+      },
+      {
+        "id": "esperar",
+        "title": "Primeira parcela em novembro",
+        "total_price_cents": 1000000,
+        "upfront_cents": 0,
+        "schedule": [
+          {
+            "due_date": "2026-11-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2026-12-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-01-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-02-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-03-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-04-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-05-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-06-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-07-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-08-01",
+            "amount_cents": 100000
+          }
+        ],
+        "visible_until": "2026-12-31",
+        "remaining_after_window_cents": 800000,
+        "projection": {
+          "mode": "scenario_with_assumptions",
+          "through_date": "2026-12-31",
+          "min_balance_cents": 80000,
+          "assessment": "meets_declared_constraints_in_window"
+        },
+        "reason_evidence_ids": [
+          "fixture-context",
+          "fixture-terms"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "fixture-context",
+        "label": "Contexto inteiramente fictício",
+        "origin": "own_synthetic_fixture",
+        "detail": "Saldo inicial R$ 2.000; entradas de R$ 6.000 no dia 5; saídas de R$ 1.200 no dia 1, R$ 2.800 no dia 10 e R$ 1.000 no dia 15, de outubro a dezembro."
+      },
+      {
+        "id": "fixture-terms",
+        "label": "Condições fictícias, não oferta de loja",
+        "origin": "own_synthetic_fixture",
+        "detail": "Preço R$ 10.000, sem entrada, dez parcelas de R$ 1.000. Neste fixture apenas, o preço e as condições se mantêm na alternativa adiada."
+      }
+    ],
+    "assumptions": [
+      "Dados próprios de demonstração, não consultados no BigQuery.",
+      "Janela financeira termina em 31/12/2026; não é uma previsão completa até a última parcela.",
+      "Dentro do mesmo dia, saídas antes de entradas por convenção conservadora.",
+      "Não há despesas/recebimentos adicionais neste exemplo; isso não representa o orçamento completo de uma pessoa real."
+    ],
+    "actions": [
+      "update_inputs",
+      "save_plan",
+      "review_plan"
+    ],
+    "trace_id": "trace-synthetic-ready"
+  },
+  {
+    "contract_version": "1.0",
+    "request_id": "example-needs-input",
+    "data_mode": "own_synthetic_demo",
+    "as_of_date": "2026-09-26",
+    "state": "needs_input",
+    "message": "Para montar o cronograma, preciso confirmar a primeira cobrança.",
+    "question": {
+      "field": "first_due_date",
+      "text": "Qual é a data da primeira parcela?"
+    },
+    "scenarios": [],
+    "evidence": [
+      {
+        "id": "fixture-context",
+        "label": "Contexto inteiramente fictício",
+        "origin": "own_synthetic_fixture",
+        "detail": "Saldo inicial R$ 2.000; entradas de R$ 6.000 no dia 5; saídas de R$ 1.200 no dia 1, R$ 2.800 no dia 10 e R$ 1.000 no dia 15, de outubro a dezembro."
+      },
+      {
+        "id": "fixture-terms",
+        "label": "Condições fictícias, não oferta de loja",
+        "origin": "own_synthetic_fixture",
+        "detail": "Preço R$ 10.000, sem entrada, dez parcelas de R$ 1.000. Neste fixture apenas, o preço e as condições se mantêm na alternativa adiada."
+      }
+    ],
+    "assumptions": [
+      "Dados próprios de demonstração, não consultados no BigQuery.",
+      "Janela financeira termina em 31/12/2026; não é uma previsão completa até a última parcela.",
+      "Dentro do mesmo dia, saídas antes de entradas por convenção conservadora.",
+      "Não há despesas/recebimentos adicionais neste exemplo; isso não representa o orçamento completo de uma pessoa real."
+    ],
+    "actions": [
+      "update_inputs"
+    ],
+    "trace_id": "trace-synthetic-question"
+  },
+  {
+    "contract_version": "1.0",
+    "request_id": "example-limited",
+    "data_mode": "own_synthetic_demo",
+    "as_of_date": "2026-09-26",
+    "state": "limited",
+    "message": "Posso mostrar os compromissos desta compra, mas falta saldo inicial confirmado para projetar o dinheiro disponível.",
+    "question": null,
+    "scenarios": [
+      {
+        "id": "agora",
+        "title": "Primeira parcela em outubro",
+        "total_price_cents": 1000000,
+        "upfront_cents": 0,
+        "schedule": [
+          {
+            "due_date": "2026-10-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2026-11-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2026-12-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-01-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-02-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-03-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-04-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-05-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-06-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-07-01",
+            "amount_cents": 100000
+          }
+        ],
+        "visible_until": "2026-12-31",
+        "remaining_after_window_cents": 700000,
+        "projection": {
+          "mode": "unavailable",
+          "through_date": null,
+          "min_balance_cents": null,
+          "assessment": "insufficient_data"
+        },
+        "reason_evidence_ids": [
+          "fixture-terms"
+        ]
+      },
+      {
+        "id": "esperar",
+        "title": "Primeira parcela em novembro",
+        "total_price_cents": 1000000,
+        "upfront_cents": 0,
+        "schedule": [
+          {
+            "due_date": "2026-11-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2026-12-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-01-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-02-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-03-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-04-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-05-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-06-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-07-01",
+            "amount_cents": 100000
+          },
+          {
+            "due_date": "2027-08-01",
+            "amount_cents": 100000
+          }
+        ],
+        "visible_until": "2026-12-31",
+        "remaining_after_window_cents": 800000,
+        "projection": {
+          "mode": "unavailable",
+          "through_date": null,
+          "min_balance_cents": null,
+          "assessment": "insufficient_data"
+        },
+        "reason_evidence_ids": [
+          "fixture-terms"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "fixture-terms",
+        "label": "Condições fictícias, não oferta de loja",
+        "origin": "own_synthetic_fixture",
+        "detail": "Preço R$ 10.000, sem entrada, dez parcelas de R$ 1.000. Neste fixture apenas, o preço e as condições se mantêm na alternativa adiada."
+      }
+    ],
+    "assumptions": [
+      "Dados próprios de demonstração; não representam ofertas reais.",
+      "Saldo e compromissos futuros não foram confirmados: não há conclusão de viabilidade."
+    ],
+    "actions": [
+      "update_inputs",
+      "save_plan",
+      "review_plan"
+    ],
+    "trace_id": "trace-synthetic-limited"
+  },
+  {
+    "contract_version": "1.0",
+    "request_id": "example-blocked",
+    "data_mode": "own_synthetic_demo",
+    "as_of_date": "2026-09-26",
+    "state": "blocked",
+    "message": "Não posso acessar o perfil de outra pessoa. Podemos continuar com a persona autorizada desta demonstração.",
+    "question": null,
+    "scenarios": [],
+    "evidence": [],
+    "assumptions": [],
+    "actions": [
+      "request_support"
+    ],
+    "trace_id": "trace-synthetic-blocked"
+  },
+  {
+    "contract_version": "1.0",
+    "request_id": "example-error",
+    "data_mode": "own_synthetic_demo",
+    "as_of_date": "2026-09-26",
+    "state": "error",
+    "message": "Não consegui consultar os dados. Não vou concluir se a compra cabe; tente novamente ou revise as condições informadas.",
+    "question": null,
+    "scenarios": [],
+    "evidence": [],
+    "assumptions": [],
+    "actions": [
+      "update_inputs"
+    ],
+    "trace_id": "trace-synthetic-error"
+  }
+]

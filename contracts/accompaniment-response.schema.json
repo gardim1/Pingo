@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pingo.invalid/contracts/accompaniment-response.schema.json",
+  "title": "Pingo AccompanimentResponse (extensão compatível do DecisionResponse v1)",
+  "type": "object",
+  "properties": {
+    "reviewed": {
+      "type": "boolean"
+    },
+    "reason": {
+      "enum": [
+        "opted_out",
+        "reviewed",
+        "needs_confirmation"
+      ]
+    },
+    "decision": {
+      "anyOf": [
+        {
+          "$ref": "decision-response.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "reviewed",
+    "reason",
+    "decision"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "reason": {
+            "const": "opted_out"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reviewed": {
+            "const": false
+          },
+          "decision": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reason": {
+            "enum": [
+              "reviewed",
+              "needs_confirmation"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reviewed": {
+            "const": true
+          },
+          "decision": {
+            "$ref": "decision-response.schema.json"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "contract_version": "1.0",
+  "request_id": "9447843b-e691-4d90-bce4-2b6927edaad3",
+  "data_mode": "own_synthetic_demo",
+  "as_of_date": "2026-09-26",
+  "state": "ready",
+  "message": "Cenário calculado com as premissas exibidas. O resultado cobre apenas a janela indicada e não aprova a compra nem prevê todo o orçamento.",
+  "question": null,
+  "scenarios": [
+    {
+      "id": "informada",
+      "title": "Celular fictício",
+      "total_price_cents": 1000000,
+      "upfront_cents": 0,
+      "schedule": [
+        {
+          "due_date": "2026-10-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2026-11-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2026-12-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-01-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-02-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-03-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-04-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-05-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-06-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-07-01",
+          "amount_cents": 100000
+        }
+      ],
+      "visible_until": "2026-12-31",
+      "remaining_after_window_cents": 700000,
+      "projection": {
+        "mode": "scenario_with_assumptions",
+        "through_date": "2026-12-31",
+        "min_balance_cents": -20000,
+        "assessment": "violates_declared_constraints_in_window"
+      },
+      "reason_evidence_ids": [
+        "fixture-context",
+        "user-terms"
+      ]
+    },
+    {
+      "id": "esperar",
+      "title": "Hipótese: primeira cobrança um mês depois",
+      "total_price_cents": 1000000,
+      "upfront_cents": 0,
+      "schedule": [
+        {
+          "due_date": "2026-11-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2026-12-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-01-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-02-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-03-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-04-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-05-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-06-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-07-01",
+          "amount_cents": 100000
+        },
+        {
+          "due_date": "2027-08-01",
+          "amount_cents": 100000
+        }
+      ],
+      "visible_until": "2026-12-31",
+      "remaining_after_window_cents": 800000,
+      "projection": {
+        "mode": "scenario_with_assumptions",
+        "through_date": "2026-12-31",
+        "min_balance_cents": 80000,
+        "assessment": "meets_declared_constraints_in_window"
+      },
+      "reason_evidence_ids": [
+        "fixture-context",
+        "user-terms"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "fixture-context",
+      "label": "Contexto inteiramente fictício",
+      "origin": "own_synthetic_fixture",
+      "detail": "Saldo e movimentos do fixture próprio de teste; não representam dados bancários atuais."
+    },
+    {
+      "id": "user-terms",
+      "label": "Condições da compra informadas",
+      "origin": "user_confirmed",
+      "detail": "Preço, entrada, número de parcelas e primeira cobrança enviados nesta requisição."
+    }
+  ],
+  "assumptions": [
+    "Dados próprios de demonstração; nenhuma consulta BigQuery ou chamada Gemini foi feita.",
+    "Os movimentos do fixture são hipotéticos e não representam orçamento completo.",
+    "Projeção limitada à janela exibida; a agenda completa inclui compromissos posteriores.",
+    "Saídas são aplicadas antes de entradas no mesmo dia quando a ordem é desconhecida.",
+    "A compra é deduzida somente pela entrada e pelas parcelas, sem descontar o preço cheio novamente.",
+    "A alternativa de esperar é hipótese: mesmo preço e mesmas condições com a primeira cobrança um mês depois; não é oferta confirmada.",
+    "Itens protegidos são prioridades declaradas; só valores e vencimentos confirmados entram no cálculo."
+  ],
+  "actions": [
+    "update_inputs",
+    "save_plan",
+    "review_plan"
+  ],
+  "trace_id": "b4b1c3a3-adfb-432c-ad38-01ad532d5041"
+}

@@ -1,0 +1,87 @@
+{
+  "label": "Fixture próprio, sem dados da base do evento",
+  "as_of_date": "2026-09-26",
+  "opening_balance_cents": 200000,
+  "projection_until": "2026-12-31",
+  "same_day_order": "outflows_before_inflows",
+  "events": [
+    {
+      "date": "2026-10-01",
+      "amount_cents": -120000,
+      "label": "Compromisso essencial confirmado no fixture"
+    },
+    {
+      "date": "2026-10-05",
+      "amount_cents": 600000,
+      "label": "Entrada hipotética confirmada no fixture"
+    },
+    {
+      "date": "2026-10-10",
+      "amount_cents": -280000,
+      "label": "Outros compromissos confirmados no fixture"
+    },
+    {
+      "date": "2026-10-15",
+      "amount_cents": -100000,
+      "label": "Compromisso existente no fixture"
+    },
+    {
+      "date": "2026-11-01",
+      "amount_cents": -120000,
+      "label": "Compromisso essencial confirmado no fixture"
+    },
+    {
+      "date": "2026-11-05",
+      "amount_cents": 600000,
+      "label": "Entrada hipotética confirmada no fixture"
+    },
+    {
+      "date": "2026-11-10",
+      "amount_cents": -280000,
+      "label": "Outros compromissos confirmados no fixture"
+    },
+    {
+      "date": "2026-11-15",
+      "amount_cents": -100000,
+      "label": "Compromisso existente no fixture"
+    },
+    {
+      "date": "2026-12-01",
+      "amount_cents": -120000,
+      "label": "Compromisso essencial confirmado no fixture"
+    },
+    {
+      "date": "2026-12-05",
+      "amount_cents": 600000,
+      "label": "Entrada hipotética confirmada no fixture"
+    },
+    {
+      "date": "2026-12-10",
+      "amount_cents": -280000,
+      "label": "Outros compromissos confirmados no fixture"
+    },
+    {
+      "date": "2026-12-15",
+      "amount_cents": -100000,
+      "label": "Compromisso existente no fixture"
+    }
+  ],
+  "decision": {
+    "price_cents": 1000000,
+    "installments": 10,
+    "upfront_cents": 0,
+    "conditions": "Condições inventadas exclusivamente para teste, não oferta real"
+  },
+  "expected": {
+    "agora": {
+      "min_balance_cents": -20000,
+      "end_balance_cents": 200000,
+      "remaining_after_window_cents": 700000
+    },
+    "esperar": {
+      "min_balance_cents": 80000,
+      "end_balance_cents": 300000,
+      "remaining_after_window_cents": 800000
+    }
+  }
+}
