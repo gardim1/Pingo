@@ -1,8 +1,43 @@
 # Status do core Pingo
 
-Atualizado em **2026-09-27**. **Nova revisão Golden PUBLICADA e PROMOVIDA no Cloud Run (`pingo-backend-00003-cup`, 100% de tráfego) com BigQuery e Gemini 3.8 Flash reais. FRONTEND FINAL CONSTRUÍDO E PUBLICADO NO CLOUD RUN (`pingo-frontend-00002-7fv`, 100% de tráfego) COM S2S PRIVADO AUTENTICADO POR GOOGLE ID TOKEN, ROTA `/` DIRETA NO PRODUTO E CHAT DINÂMICO.**
+Atualizado em **2026-09-27 (Deploy Final Pré-Apresentação)**. **Nova revisão Backend PUBLICADA e PROMOVIDA no Cloud Run (`pingo-backend-00005-nuf`, 100% de tráfego) com BigQuery e Gemini 3.8 Flash reais e suporte genérico a intenções. FRONTEND PUBLICADO NO CLOUD RUN (`pingo-frontend-00002-7fv`, 100% de tráfego) COM S2S PRIVADO AUTENTICADO POR GOOGLE ID TOKEN, ROTA `/` DIRETA NO PRODUTO E CHAT DINÂMICO.**
 
-## Continuação executada — 27/09/2026 (QA Fix, Nova Imagem, Candidata e Promoção)
+## Deploy Final Pré-Apresentação — 27/09/2026
+
+1. **Ajustes de Intenções e Tópicos Genéricos (`c0e6329`):**
+   - Transição limpa de assunto: troca de tópico (casa, viagem, notebook, AirPods, obrigação mensal) reseta termos anteriores do iPhone.
+   - Perguntas de esclarecimento não citam "aparelho" para casa ou viagem.
+   - Viagem tratada como meta de poupança (ex: R$ 6.000 em 3 meses = R$ 2.000/mês).
+   - 156 testes unitários PASS (`pytest -q`).
+   - 41 avaliações PASS (18 legados em `scripts.evaluate` + 23 golden em `scripts.evaluate_golden`).
+
+2. **Cloud Build Backend:**
+   - Build ID: `16786af2-6588-4210-856f-bf0a25e37f38` (STATUS: SUCCESS).
+   - Imagem: `us-central1-docker.pkg.dev/batalha-time-08-g7ha/agentes/pingo-backend:golden-202609271042`.
+   - Digest: `sha256:bc16eb0e8fde6a40686d34e597c8a58b15c3ab8ecfcc83969c4bd71d5a98d03a`.
+
+3. **Publicação da Revisão Candidata com Zero Tráfego:**
+   - Revisão criada: `pingo-backend-00005-nuf` com tag `golden`.
+   - Smoke HTTPS autenticado na candidata: PASS (`golden-cloud-smoke-20260927T134545112349.json`).
+   - Anonymous health: 403.
+   - BigQuery e Gemini 3.8 Flash reais: 13/13 endpoints HTTP 200.
+
+4. **Promoção de Tráfego:**
+   - Migrado 100% de tráfego para `pingo-backend-00005-nuf`.
+   - URL canônica privada: `https://pingo-backend-uahbqqbh3a-uc.a.run.app`.
+
+5. **Validação E2E Final no Frontend Público (`https://pingo-frontend-575520783518.us-central1.run.app`):**
+   - Rota `/` abre diretamente a Home Bancária Simulada (PASS).
+   - Flow map preservado em `/demo-map` e `/dev/flow` (PASS).
+   - S2S autenticado com Google ID Token: PASS (zero segredos/tokens no browser).
+   - AirPods R$ 2.000: PASS (solicita condições sem citar iPhone).
+   - Casa: PASS (solicita valor do imóvel e prestação sem citar aparelho).
+   - Notebook R$ 8.000 / 8x: PASS (8x R$ 1.000,00 calculado).
+   - Viagem R$ 6.000: PASS (meta de R$ 2.000,00/mês até dez/25).
+   - Golden iPhone: PASS (10x R$ 1.000,00 com fatos BigQuery e folga calculada).
+   - Guardrails / Prompt Injection: PASS (bloqueado com proteção de dados da sessão).
+
+## Histórico da revisão anterior — 27/09/2026 (00003-cup)
 
 1. **Correção Mínima Obrigatória de QA (WARN resolvido — PASS):**
    - Eliminado prefixo `"Recalculei a comparação para o mês que você escolheu"` quando o usuário ainda não escolheu outro mês (ex.: turno "10 vezes sem juros").
@@ -48,7 +83,7 @@ Atualizado em **2026-09-27**. **Nova revisão Golden PUBLICADA e PROMOVIDA no Cl
 8. **Limitação Registrada (sem bloqueio de deploy):**
    - Leitura de política IAM ancestral em `folders/900300571186:getIamPolicy` retornou 403 `PERMISSION_DENIED` (`IAM_PERMISSION_DENIED`). Acesso privado ao serviço verificado via IAM no serviço e no projeto (chamadas anônimas rejeitadas com 403; chamadas autenticadas aceitas com 200). Nenhum grant público no serviço ou projeto.
 
-## Resultado da Publicação Golden
+## Resultado da publicação anterior (00003-cup)
 
 | Item | Estado e evidência |
 |---|---|
