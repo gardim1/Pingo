@@ -96,8 +96,13 @@ def golden_decision(request: DecisionRequest, context: FinancialContext, simulat
     result.data_mode = 'event_dataset_demo'  # Legacy v1 provenance enum; runtime names actual provider.
     result.assumptions = list(dict.fromkeys([*result.assumptions, *analysis.assumptions]))
     terms = request.decision
-    if not terms or terms.total_price_cents is None:
-        result.question = Question(field='total_price_cents', text='Qual é o preço total do aparelho que você está considerando?')
+    topic = terms.label.split(' — ')[0] if terms and terms.label else None
+    if topic == 'Casa' and (not terms or terms.total_price_cents is None or terms.installment_count is None):
+        result.question = Question(field='total_price_cents', text=HOUSE_QUESTION)
+    elif topic in {'Viagem', 'Nova obrigação mensal'}:
+        result.question = Question(field='goal', text='Você já tem algum valor guardado para isso?')
+    elif not terms or terms.total_price_cents is None:
+        result.question = Question(field='total_price_cents', text='Qual é o preço total da compra que você está considerando?')
     elif terms.installment_count is None:
         result.question = Question(field='installment_count', text='Você pensa em pagar à vista, dar uma entrada ou parcelar?')
     elif terms.interest_free is not True:
@@ -115,10 +120,57 @@ def golden_decision(request: DecisionRequest, context: FinancialContext, simulat
     return result, analysis
 
 
+HOUSE_QUESTION = ('Consigo te ajudar a avaliar o impacto, mas preciso de algumas informações. '
+                  'Qual é aproximadamente o valor do imóvel? Você pretende pagar algum valor inicialmente e financiar o restante? '
+                  'Se já tiver a prestação mensal simulada, me diga o valor.')
+MONTHS = ('janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro')
+
+
+def history_note(analysis):
+    if analysis.last_month_margin_cents is None:
+        return 'Não tenho margem histórica suficiente para comparar.'
+    return (f'Em setembro a margem observada foi {money(analysis.last_month_margin_cents)}; '
+            'isso é histórico volátil, não é saldo nem garantia de renda.')
+
+
+def render_goal(request, analysis, topic):
+    message = request.message
+    if topic == 'Nova obrigação mensal':
+        found = re.search(r'R\$\s*(\d[\d.]*(?:,\d{2})?)', message)
+        if not found:
+            return 'Qual seria o valor mensal dessa nova obrigação e por quantos meses?'
+        amount = int(Decimal(found.group(1).rstrip('.').replace('.', '').replace(',', '.')) * 100)
+        parts = [f'Uma nova obrigação de {money(amount)} por mês reduz no mesmo valor a folga mensal.']
+        if analysis.last_month_margin_cents is not None:
+            parts.append(f'Na comparação com setembro, a margem observada iria de {money(analysis.last_month_margin_cents)} '
+                         f'para {money(analysis.last_month_margin_cents - amount)}. É histórico volátil, não é saldo nem garantia de renda.')
+        parts.append('Por quantos meses seria essa obrigação?')
+        return ' '.join(parts)
+    goal = request.decision.total_price_cents if request.decision else None
+    month = re.search(r'\b(' + '|'.join(MONTHS) + r')\b', message.lower())
+    if goal is None:
+        return 'Entendi como uma meta de viagem. Quanto você precisa juntar e até quando?'
+    if not month:
+        return f'Entendi como uma meta de {money(goal)}. Até que mês você quer ter esse valor?'
+    reference = analysis.reference_date
+    target = MONTHS.index(month.group(1)) + 1
+    count = (target - reference.month) % 12 or 12
+    monthly = max(split_installments(goal, count))
+    return (f'Entendi como uma meta, não como compra parcelada: juntar {money(goal)} até '
+            f'{target:02d}/{reference.year + (target < reference.month)}. '
+            f'Separando igualmente em {count} meses, seriam até {money(monthly)} por mês. {history_note(analysis)} '
+            'Você já tem algum valor guardado para essa viagem?')
+
+
 def render_golden(request, result, analysis):
     message = request.message.lower()
-    if re.search(r'\bita[uú]\b|iphone pra sempre', message):
-        return 'Modalidades do banco podem ser comparadas caso você forneça as condições reais. Não tenho condições verificadas desse produto configuradas.'
+    if re.search(r'\bita[uú]\b|iphone pra sempre|cons[óo]rcio|empr[ée]stimo', message):
+        return 'Posso comparar se você me fornecer as condições reais da oferta. Não tenho condições verificadas desse produto configuradas.'
+    topic = request.decision.label.split(' — ')[0] if request.decision and request.decision.label else None
+    if topic in {'Viagem', 'Nova obrigação mensal'}:
+        return render_goal(request, analysis, topic)
+    if topic == 'Casa' and (request.decision.total_price_cents is None or request.decision.installment_count is None):
+        return HOUSE_QUESTION
     if not request.decision or request.decision.total_price_cents is None or request.decision.installment_count is None:
         return ('EVENTO SIMULADO recebido; faltam condições do plano para comparar. ' if analysis.simulated_purchase_cents else '') + result.question.text
     if not analysis.installments_cents:

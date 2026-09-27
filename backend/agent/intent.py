@@ -18,12 +18,37 @@ class EmptyToolArgs(StrictModel):
     """Tools use only request-scoped, backend-authorized inputs."""
 
 
+TOPIC_RESET = re.compile(r'\b(esquece|esque[çc]a|na verdade|outra coisa|mudando de assunto)\b', re.I)
+
+
+def detect_topic(message: str) -> str | None:
+    """Item/goal named in this message; never inherited from a demo default."""
+    if re.search(r'\b(viajar|viagem)\b', message, re.I):
+        return 'Viagem'
+    if re.search(r'\b(casa|im[óo]vel|apartamento)\b', message, re.I):
+        return 'Casa'
+    if re.search(r'\b(assumir|mais)\b.{0,30}\b(por|ao)\s+m[eê]s\b', message, re.I):
+        return 'Nova obrigação mensal'
+    if re.search(r'\biphone\b', message, re.I):
+        return 'iPhone'
+    item = re.search(r'\b(?:comprar|compro|trocar)\s+(?:um|uma|o|a|uns|umas)\s+([A-Za-zÀ-ú0-9]+)', message, re.I)
+    return item.group(1).capitalize() if item else None
+
+
+def topic_of(terms: DecisionTerms | None) -> str | None:
+    return terms.label.split(' — ')[0] if terms and terms.label else None
+
+
 def extract_terms(message: str, previous: DecisionTerms | None) -> DecisionTerms:
     """Only unambiguous Brazilian currency, explicit installments and ISO dates.
 
     Unrecognized/ambiguous prose leaves fields absent so the engine asks. Structured
     fields remain the route for richer conditions. No inferred interest or discounts.
     """
+    topic = detect_topic(message)
+    # A new explicit subject replaces the previous draft: no price/term leakage.
+    if TOPIC_RESET.search(message) or (topic and topic != topic_of(previous)):
+        previous = None
     terms = (previous or DecisionTerms()).model_dump()
     # A mentioned field supersedes the previous draft even when the new value
     # cannot be parsed. In that case ask instead of silently keeping old terms.
@@ -54,7 +79,7 @@ def extract_terms(message: str, previous: DecisionTerms | None) -> DecisionTerms
                 continue
             explicit_price = re.search(r'(?:por|preço|preco|total|custa|custará|custara)\s*(?:de\s*)?$', before)
             bare_amount = message[:match.start()].strip() == ''
-            purchase_context = re.search(r'\b(comprar|iphone|celular|produto)\b', before, re.I)
+            purchase_context = re.search(r'\b(comprar|iphone|celular|produto|preciso|viajar|viagem|um|uma)\b', before, re.I)
             if not (explicit_price or bare_amount or purchase_context):
                 continue
         extracted[field].append(int(Decimal(raw.replace('.', '').replace(',', '.')) * 100))
@@ -73,8 +98,8 @@ def extract_terms(message: str, previous: DecisionTerms | None) -> DecisionTerms
     dates = re.findall(r'(?:primeira(?:\s+(?:parcela|cobrança))?|vencimento)\s*(?:em|dia|:)\s*(\d{4}-\d{2}-\d{2})(?!\d)', message, re.I)
     if dates:
         terms['first_due_date'] = date.fromisoformat(dates[0]) if len(dates) == 1 else None
-    if re.search(r'\biphone\b', message, re.I):
-        terms['label'] = 'iPhone — condições informadas'
+    if topic:
+        terms['label'] = f'{topic} — condições informadas'
     return DecisionTerms.model_validate(terms)
 
 

@@ -1,6 +1,6 @@
 # Pingo — relatório executado de avaliações
 
-Gerado em 2026-09-27T12:15:17+00:00 por `python -m scripts.evaluate`.
+Gerado em 2026-09-27T13:35:38+00:00 por `python -m scripts.evaluate`.
 
 Resultado desta execução: **18 PASS / 0 FAIL**. 18 casos executados.
 
