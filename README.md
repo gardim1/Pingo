@@ -49,7 +49,7 @@ Browser
 - `frontend/`: app React/Vite com servidor Node/Express que chama o backend server-side.
 - `tests/`, `scripts/`: testes, evals e smoke tests.
 - `contracts/`: schemas JSON da resposta de decisão.
-- `docs/`: especificação, handoffs de API, BigQuery, deploy e relatórios de evals.
+- `docs/`: especificação, handoffs de API, BigQuery, deploy e relatórios de evals. Destaques para a submissão: [`docs/RACIONAL_EXPERIENCIA.md`](docs/RACIONAL_EXPERIENCIA.md) (racional de prototipação e UX), [`docs/DESENHO_SOLUCAO.md`](docs/DESENHO_SOLUCAO.md) (arquitetura, engenharia e ciência de dados) e [`docs/ARQUITETURA.md`](docs/ARQUITETURA.md) (componentes, integrações e decisões técnicas).
 
 ## Demo pública
 
